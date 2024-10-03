@@ -1,0 +1,15 @@
+/* user-list.component.css */
+.big-button {
+    font-size: 20px;
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+  }
+  .right-align {
+    display: flex;
+    justify-content: flex-end; /* Aligns items to the right */
+    width: 100%; /* Ensure it takes the full width */
+  }
+  

@@ -1,0 +1,15 @@
+<h2>User List</h2>
+  
+<ul>
+  <li *ngFor="let user of users; let i = index">
+    <input [(ngModel)]="user.name" placeholder=user.name /> 
+    <input [(ngModel)]="user.age" placeholder="Enter a age" /> 
+    <!-- <button (click)="updateUser(i)" >Update</button>
+    <button (click)="deleteUser(i)" >Delete</button> -->
+  </li>
+</ul>
+<!-- <div>
+    <input [(ngModel)]="newUserName" placeholder="Enter a name" /> 
+    <input [(ngModel)]="newUserAge" placeholder="Enter a age" /> 
+    <button (click)="addUser()">Add</button>
+</div> -->

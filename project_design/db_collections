@@ -1,0 +1,14 @@
+1. clients 
+fname string
+lname string
+phone number
+cars list
+age ?
+adress ?
+
+2. cars
+type string
+model string
+owner?
+
+3. 
