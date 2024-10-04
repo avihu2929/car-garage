@@ -11,4 +11,11 @@ type string
 model string
 owner?
 
-3. 
+3. repairs
+car id
+client id
+resolved boolean
+price number
+repair_details list of strings
+date_start
+date_finish

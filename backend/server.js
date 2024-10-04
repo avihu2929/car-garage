@@ -2,6 +2,9 @@ const express = require('express');
 const mongoose = require('mongoose');
 const { MongoClient } = require('mongodb');
 const User = require('./models/User'); 
+const Car = require('./models/Car'); 
+
+const Client = require('./models/Client'); 
 const app = express();
 var cors = require("cors");
 const socketIo = require('socket.io');
@@ -26,6 +29,41 @@ app.post('/api/users/post', async (req, res) => {
         res.status(500).send({ message: 'Error inserting user', error });
     }
 });
+app.post('/api/cars/post', async (req, res) => {
+  try {
+      const newCar = new Car(req.body); // Create a new instance of the User model
+      const result = await newCar.save(); // Save the new user to the database
+      res.status(200).send(result); // Send the result back to the client
+      console.log(req.body)
+      console.error('new car added');
+  } catch (error) {
+      console.error('Error inserting user:', error);
+      console.log(req.body)
+      res.status(500).send({ message: 'Error inserting user', error });
+  }
+});
+app.post('/api/clients/post', async (req, res) => {
+  try {
+    const newClient = new Client({
+      firstName:req.body.firstName,
+      lastName:req.body.lastName,
+      phone:req.body.phone,
+      cars: req.body.cars 
+    });
+
+    const savedClient = await newClient.save(); // Save the client to the database
+    res.status(201).send(savedClient); // Send the saved client back
+    console.log(req.body)
+  } catch (error) {
+    console.log(req.body)
+
+    console.error('Error adding client:', error);
+    res.status(500).send({ message: 'Error adding client', error });
+  }
+});
+
+
+
 app.delete('/api/users/:id', async (req, res) => {
   try {
       const userId = req.params.id; // Get the user ID from the request parameters
@@ -82,6 +120,36 @@ app.put('/api/users/:id', async (req, res) => {
       res.status(500).json({ message: error.message });
     }
   });
+//repairs service======================================
+app.get('/api/clients/searchByPhone', async (req, res) => {
+  const { phone } = req.query;
+
+  try {
+    const clients = await Client.findOne({
+      phone: phone // Match the phone number exactly
+    });
+    
+    res.status(200).send(clients);
+  } catch (error) {
+    console.error('Error searching for clients by phone:', error);
+    res.status(500).send({ message: 'Error searching for clients', error });
+  }
+});
+app.get('/api/cars/searchByNumber', async (req, res) => {
+  const { number } = req.query;
+
+  try {
+    const cars = await Car.findOne({
+      number: number // Match the car number exactly
+    });
+
+    res.status(200).send(cars);
+  } catch (error) {
+    console.error('Error searching for cars by number:', error);
+    res.status(500).send({ message: 'Error searching for cars', error });
+  }
+});
+
 
 // Start the server
 app.listen(port, () => {

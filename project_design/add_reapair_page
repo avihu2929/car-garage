@@ -1,0 +1,16 @@
+client:
+select clients | empty if not found
+input first name
+input last name 
+button search by full name
+input phone number
+button search by phone number
+
+select cars | empty if no client found
+input car number | bound to select | if new car enter manually
+button search by car number
+input car company
+input car model
+input car code
+
+input repair data
