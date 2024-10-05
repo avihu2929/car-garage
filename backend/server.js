@@ -149,6 +149,39 @@ app.get('/api/cars/searchByNumber', async (req, res) => {
     res.status(500).send({ message: 'Error searching for cars', error });
   }
 });
+app.get('/api/cars/byClientPhone', async (req, res) => {
+  const { phone } = req.query; // Extract phone number from query parameters
+
+  try {
+    // Find the client by phone number
+    const client = await Client.findOne({ phone: phone });
+    
+    if (!client) {
+      return res.status(404).send({ message: 'Client not found' });
+    }
+
+    // Retrieve all cars for the found client
+    const cars = await Car.find({ number: { $in: client.cars } }); // Match car numbers in the client's car list
+    
+    res.status(200).send(cars); // Return the list of cars
+  } catch (error) {
+    console.error('Error retrieving cars by client phone:', error);
+    res.status(500).send({ message: 'Error retrieving cars', error });
+  }
+});
+
+
+app.get('/api/clients/ownersByCarNumber', async (req, res) => {
+  const { carNumber } = req.query; // Extract car number from query parameters
+
+  try {
+    const clients = await Client.find({ cars: carNumber }); // Find clients with the specified car number
+    res.status(200).send(clients); // Return the list of clients
+  } catch (error) {
+    console.error('Error retrieving clients by car number:', error);
+    res.status(500).send({ message: 'Error retrieving clients', error });
+  }
+});
 
 
 // Start the server

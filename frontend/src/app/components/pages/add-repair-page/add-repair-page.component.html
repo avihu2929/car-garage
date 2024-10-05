@@ -1,49 +1,68 @@
-<form>
-    <mat-form-field>
-      <mat-label>First Name</mat-label>
-      <input matInput type="text" [(ngModel)]="firstName" name="firstName">
-    </mat-form-field>
-  
-    <mat-form-field>
-      <mat-label>Last Name</mat-label>
-      <input matInput type="text" [(ngModel)]="lastName" name="lastName">
-    </mat-form-field>
-  <button>search by name</button>
-    <mat-form-field class="example-full-width">
-      <mat-label>Telephone</mat-label>
-      <span matTextPrefix>+972 &nbsp;</span>
-      <input matInput type="tel" [(ngModel)]="phoneNumber" name="phoneNumber">
-    </mat-form-field>
-</form>
-  <button (click)="searchByPhone()">search by phone</button>
-  <mat-form-field>
-    <mat-label>Select Car</mat-label>
-    <mat-select [(ngModel)]="selectedCar" (selectionChange)="onCarChange($event)">
-      <mat-option *ngFor="let car of cars; let i = index" [value]="i">
-        {{ car.company }} - {{ car.number }}
-      </mat-option>
-    </mat-select>
-  </mat-form-field>
-  
-  
-<form>
-    <mat-form-field>
-      <mat-label>Car Number</mat-label>
-      <input matInput type="number" [(ngModel)]="carNumber" name="carNumber">
-    </mat-form-field>
-    <button>search by car number</button>
-      <mat-form-field>
-        <mat-label>Car Company</mat-label>
-        <input matInput type="text" [(ngModel)]="carCompany" name="carCompany">
-      </mat-form-field>
-      <mat-form-field>
-        <mat-label>Car Model</mat-label>
-        <input matInput type="text" [(ngModel)]="carModel" name="carModel">
-      </mat-form-field>
-      <mat-form-field>
-        <mat-label>Car Code</mat-label>
-        <input matInput type="number" [(ngModel)]="carCode" name="carCode">
-      </mat-form-field>
+<div class="form-container">
+    <div class="adjusted-width">
+        <mat-form-field >
+            <mat-label>Select Client</mat-label>
+            <mat-select [(ngModel)]="selectedClient" (selectionChange)="onClientChange($event)">
+              <mat-option *ngFor="let client of clients; let i = index" [value]="i">
+                {{ client.firstName }} - {{ client.lastName }}
+              </mat-option>
+            </mat-select>
+            
+          </mat-form-field>
+          <label>   Clients: {{clients.length}}</label>
+    </div>
 
-  </form>
-  
+    <form>
+        <mat-form-field>
+          <mat-label>First Name</mat-label>
+          <input matInput type="text" [(ngModel)]="firstName" name="firstName">
+        </mat-form-field>
+      
+        <mat-form-field>
+          <mat-label>Last Name</mat-label>
+          <input matInput type="text" [(ngModel)]="lastName" name="lastName">
+        </mat-form-field>
+        <mat-form-field class="example-full-width">
+          <mat-label>Telephone</mat-label>
+          <span matTextPrefix>+972 &nbsp;</span>
+          <input matInput type="tel" [(ngModel)]="phoneNumber" name="phoneNumber">
+        </mat-form-field>
+        
+    </form>
+    <button class="adjusted-width" (click)="searchByPhone()">search by phone</button>
+    <div class="adjusted-width">
+        <mat-form-field >
+          <mat-label>Select Car</mat-label>
+          <mat-select [(ngModel)]="selectedCar" (selectionChange)="onCarChange($event)">
+            <mat-option *ngFor="let car of cars; let i = index" [value]="i">
+              {{ car.company }} - {{ car.number }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        <label>    Cars: {{cars.length}}</label>
+    </div>
+
+      
+      
+    <form>
+        <mat-form-field>
+          <mat-label>Car Number</mat-label>
+          <input matInput type="number" [(ngModel)]="carNumber" name="carNumber">
+        </mat-form-field>
+          <mat-form-field>
+            <mat-label>Car Company</mat-label>
+            <input matInput type="text" [(ngModel)]="carCompany" name="carCompany">
+          </mat-form-field>
+          <mat-form-field>
+            <mat-label>Car Model</mat-label>
+            <input matInput type="text" [(ngModel)]="carModel" name="carModel">
+          </mat-form-field>
+          <mat-form-field>
+            <mat-label>Car Code</mat-label>
+            <input matInput type="number" [(ngModel)]="carCode" name="carCode">
+          </mat-form-field>
+    
+      </form>
+      <button class="adjusted-width" (click)="searchByCarNum()">search by car number</button>
+
+</div>

@@ -26,5 +26,14 @@ export class CarsService {
     return null
     }
   }
+  async searchByClientPhone(phone: number): Promise<CarModel[]|null> {
+    try {
+      const cars = await firstValueFrom(this.http.get<CarModel[]>(`${this.apiUrl}/byClientPhone?phone=${phone}`));
+      return cars; // Return the list of cars
+    } catch (error) {
+      console.error('Error searching for cars:', error);
+    return null
+    }
+  }
   }
 

@@ -27,7 +27,6 @@ export class ClientsService {
   async searchByPhone(phone: number): Promise<ClientModel | null> {
     try {
       const clients: ClientModel =  await firstValueFrom(this.http.get<any>(`${this.apiUrl}/searchByPhone`, { params: { phone } }));
-      console.log(clients)
       return clients;
     } catch (error) {
       console.error('Error searching for clients by phone:', error);
@@ -35,6 +34,15 @@ export class ClientsService {
       return null; // Return an empty array on error
     }
   }
-
+  async getCarOwners(carNumber: number): Promise<ClientModel[]|null> {
+    try {
+      const owners = await firstValueFrom(this.http.get<ClientModel[]>(`${this.apiUrl}/ownersByCarNumber?carNumber=${carNumber}`));
+      return owners
+    } catch (error) {
+      console.error('Error fetching car owners:', error);
+      return null
+    }
+  }
+  
   
 }

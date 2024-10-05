@@ -17,15 +17,8 @@ import { CarsService } from '../../../services/cars.service';
   styleUrl: './add-repair-page.component.css'
 })
 export class AddRepairPageComponent {
-onCarChange($event: MatSelectChange) {
-console.log($event.value)
-const carOption = this.cars.at($event.value)
-if (carOption) {
-  this.setCarDataToUI(carOption);
-} else {
-  console.log("Selected car not found.");
-}
-}
+
+
 carNumber: any;
 phoneNumber: number = 666;
 lastName: any;
@@ -35,41 +28,58 @@ carModel: any;
 carCode: any;
 cars: CarModel[] = [];
 selectedCar: any;
+clients: ClientModel[] =[];
+selectedClient: any;
 
 constructor(private clientsService:ClientsService,private carsService:CarsService){}
-
-    async searchByPhone() {
-      const client = await this.clientsService.searchByPhone(this.phoneNumber);
-      
-      // Check if clients is not null or undefined
-      if (client) {
-        this.setClientDataToUI(client)
+onCarChange($event: MatSelectChange) {
+  const carOption = this.cars.at($event.value)
+  if (carOption) {
+    this.setCarDataToUI(carOption);
+  } else {
+    console.log("Selected car not found.");
+  }
+  }
+  onClientChange($event: MatSelectChange) {
+    const clientOption = this.clients.at($event.value)
+    if (clientOption) {
+      this.setClientDataToUI(clientOption);
+    } else {
+      console.log("Selected car not found.");
+    }
+    }
+  async searchByPhone(){
+    const client = await this.clientsService.searchByPhone(this.phoneNumber);
+    if(client){
+      const cars = await this.carsService.searchByClientPhone(client.phone)
+      this.setClientDataToUI(client)
+      this.clients=[]
+      this.cars=[]
+      if (cars && cars.length > 0) {
+        cars.forEach(car=>{
+          this.cars.push(car)
+        })
+        const firstCar = cars[0]; 
         this.selectedCar = 0
-        this.cars = [];
-        
-        // Use map to create an array of promises
-        const carPromises = client.cars.map(async carNumber => {
-          const car = await this.carsService.searchByNumber(Number(carNumber));
-          if (car) { 
-            this.cars.push(car); 
-          } else {
-            console.log(`Car not found for number: ${carNumber}`);
-          }
-        });
-        
-        // Wait for all promises to resolve
-        await Promise.all(carPromises);
-        
-        if (this.cars.length > 0) {
-          // Uncomment this to set data for the first car
-          // this.setCarDataToUI(this.cars[0]); // Set the data for the first car
-          const firstCar = this.cars[0];
-          this.setCarDataToUI(firstCar);
-        } else {
-          console.log("No cars found for the client.");
+        this.setCarDataToUI(firstCar);
+      }
+    }
+  }
+    async searchByCarNum() {
+      const car = await this.carsService.searchByNumber(this.carNumber);
+      if (car) {
+        this.setCarDataToUI(car)
+        const clients = await this.clientsService.getCarOwners(car.number); 
+        this.clients=[]
+        this.cars=[]
+        if(clients && clients.length>0){
+          clients.forEach(client=>{
+            this.clients.push(client)
+          })
+          const firstClient = clients[0]; 
+          this.selectedClient = 0;
+          this.setClientDataToUI(firstClient);
         }
-      } else {
-        console.log("No clients found.");
       }
     }
     
