@@ -1,6 +1,9 @@
+// git add .
+// git commit -m "test"
+// git push heroku main
+
 const express = require('express');
 const mongoose = require('mongoose');
-const { MongoClient } = require('mongodb');
 const User = require('./models/User'); 
 const Car = require('./models/Car'); 
 const Repair = require('./models/Repair'); 
@@ -10,22 +13,22 @@ const path = require('path');
 const jwt = require('jsonwebtoken');
 const app = express();
 var cors = require("cors");
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
 const https = require('https');
-const socketIo = require('socket.io');
-const http = require('http');
-const port = 3000;
-const server = http.createServer(app);
-const WebSocket = require('ws');
-const privateKey = fs.readFileSync(path.resolve(__dirname, 'SSL/key.pem'), 'utf8');
-const certificate = fs.readFileSync(path.resolve(__dirname, 'SSL/cert.pem'), 'utf8');
-const credentials = { key: privateKey, cert: certificate };
+// const privateKey = fs.readFileSync(path.resolve(__dirname, 'SSL/key.pem'), 'utf8');
+// const certificate = fs.readFileSync(path.resolve(__dirname, 'SSL/cert.pem'), 'utf8');
+// const credentials = { key: privateKey, cert: certificate };
 const jwtSecret = '5ff4de49259eac1f2b6ac32449c6a4c515156bdd73a89e76827e91247fff567b' //in production add to an environment variable
 app.use(cors())
 app.use(express.json()); // To parse JSON request bodies
-mongoose.connect('mongodb://127.0.0.1:27017/db')
-  .then(() => console.log('Connected!'));
-  const httpsServer = https.createServer(credentials, app);
+const port =process.env.PORT
+const mongoURI = process.env.MONGODB_URI 
+// mongoose.connect('mongodb://127.0.0.1:27017/db')
+//   .then(() => console.log('Connected!'));
+mongoose.connect(mongoURI)
+  .then(() => console.log('MongoDB connected'))
+  .catch(err => console.error('MongoDB connection error:', err));
+  // const httpsServer = https.createServer(credentials, app);
 //Authentication===================================
 const authenticateToken = (req, res, next) => {
   const token = req.headers['authorization']?.split(' ')[1]; 
@@ -327,6 +330,9 @@ app.get('/api/repairs/unresolved',authenticateToken, async (req, res) => {
 // app.listen(port, () => {
 //   console.log(`Server running on http://localhost:${port}`);
 // });
-httpsServer.listen(3000, () => {
-  console.log('HTTPS Server running on https://localhost:3000');
+// httpsServer.listen(3000, () => {
+//   console.log('HTTPS Server running on https://localhost:3000');
+// });
+app.listen(port, () => {
+  console.log(`Server is running on port ${port}`);
 });

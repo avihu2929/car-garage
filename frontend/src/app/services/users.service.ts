@@ -14,7 +14,7 @@ interface LoginResponse {
 export class UsersService {
 
   constructor(private http: HttpClient, private router: Router) { }
-  private apiUrl = 'https://localhost:3000/api';
+  private apiUrl = 'https://car-garage-backend-d7adcbe0ddec.herokuapp.com/api';
 
   
   // getUsers(): Observable<UserModel[]> {
