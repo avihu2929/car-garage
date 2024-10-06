@@ -9,7 +9,7 @@ import { ClientModel } from '../model/client.model';
 })
 export class ClientsService {
 
-  private apiUrl = 'http://localhost:3000/api/clients';
+  private apiUrl = 'https://localhost:3000/api/clients';
   constructor(private http: HttpClient, private router: Router) { }
   async addClient(newClient: {
     firstName: string;

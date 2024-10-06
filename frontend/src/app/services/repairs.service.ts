@@ -8,7 +8,7 @@ import { RepairModel } from '../model/repair.model';
   providedIn: 'root'
 })
 export class RepairsService {
-  private apiUrl = 'http://localhost:3000/api/repairs';
+  private apiUrl = 'https://localhost:3000/api/repairs';
   constructor(private http: HttpClient, private router: Router) { }
   async searchByPhone(phone: number): Promise<any[]> {
     try {

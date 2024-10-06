@@ -18,12 +18,12 @@ export class UsersService {
   // }
   
   getUsers(): Observable<any> {
-    return this.http.get(`'http://localhost:3000/api/users`);
+    return this.http.get(`'https://localhost:3000/api/users`);
   }
 
   async login(hash: string): Promise<void> {
     try {
-      const response = await firstValueFrom(this.http.post('http://localhost:3000/api/auth/login', hash));
+      const response = await firstValueFrom(this.http.post('https://localhost:3000/api/auth/login', hash));
       console.log('New repair posted:', response);
     } catch (error) {
       console.error('Error posting repair:', error);
@@ -31,7 +31,7 @@ export class UsersService {
   }
 async getUsers2(): Promise<UserModel[]> {
   try {
-    const users = await firstValueFrom(this.http.get<UserModel[]>('http://localhost:3000/api/users'));
+    const users = await firstValueFrom(this.http.get<UserModel[]>('https://localhost:3000/api/users'));
     return users || []; // Return an empty array if users is undefined
   } catch (error) {
     this.router.navigate(["error"]);
@@ -41,7 +41,7 @@ async getUsers2(): Promise<UserModel[]> {
 
 
   deleteUser(id: string): Observable<boolean> {
-    return this.http.delete(`${'http://localhost:3000/api/users'}/${id}`).pipe(
+    return this.http.delete(`${'https://localhost:3000/api/users'}/${id}`).pipe(
       map(()=> {
         return true;
       }),

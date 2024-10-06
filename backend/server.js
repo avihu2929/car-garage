@@ -5,20 +5,26 @@ const User = require('./models/User');
 const Car = require('./models/Car'); 
 const Repair = require('./models/Repair'); 
 const Client = require('./models/Client'); 
+const fs = require('fs');
+const path = require('path');
+
 const app = express();
 var cors = require("cors");
 const bcrypt = require('bcrypt');
-
+const https = require('https');
 const socketIo = require('socket.io');
 const http = require('http');
 const port = 3000;
 const server = http.createServer(app);
 const WebSocket = require('ws');
-
+const privateKey = fs.readFileSync(path.resolve(__dirname, 'SSL/key.pem'), 'utf8');
+const certificate = fs.readFileSync(path.resolve(__dirname, 'SSL/cert.pem'), 'utf8');
+const credentials = { key: privateKey, cert: certificate };
 app.use(cors())
 app.use(express.json()); // To parse JSON request bodies
 mongoose.connect('mongodb://127.0.0.1:27017/db')
   .then(() => console.log('Connected!'));
+  const httpsServer = https.createServer(credentials, app);
 //Authentication===================================
 app.post('/api/users/register', async (req, res) => {
   try {
@@ -285,6 +291,9 @@ app.get('/api/repairs/unresolved', async (req, res) => {
   }
 });
 // Start the server
-app.listen(port, () => {
-  console.log(`Server running on http://localhost:${port}`);
+// app.listen(port, () => {
+//   console.log(`Server running on http://localhost:${port}`);
+// });
+httpsServer.listen(3000, () => {
+  console.log('HTTPS Server running on https://localhost:3000');
 });

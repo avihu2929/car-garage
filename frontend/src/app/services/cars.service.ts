@@ -8,7 +8,7 @@ import { CarModel } from '../model/car.model';
   providedIn: 'root'
 })
 export class CarsService {
-  private apiUrl = 'http://localhost:3000/api/cars';
+  private apiUrl = 'https://localhost:3000/api/cars';
   constructor(private http: HttpClient, private router: Router) { }
   async addCar(newCar: { number: number; company: string; model: string; code?: number }): Promise<void> {
     try {
