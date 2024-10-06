@@ -1,8 +1,7 @@
-A learning project of angular ,express and mongodb
+"A learning project built with Angular, Express, and MongoDB.
 
-Main feeatures:
+Main features include:
 
-clean ui using material ui library
-mongodb and express backend
-efficent queries to retrieve data
-https protection and jwt tokens authentication
+A clean, responsive UI using Angular Material.
+A backend powered by Express with efficient MongoDB queries for data retrieval.
+Secure HTTPS implementation and JWT-based authentication for user security."
