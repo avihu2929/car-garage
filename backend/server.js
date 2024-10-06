@@ -20,7 +20,7 @@ const WebSocket = require('ws');
 const privateKey = fs.readFileSync(path.resolve(__dirname, 'SSL/key.pem'), 'utf8');
 const certificate = fs.readFileSync(path.resolve(__dirname, 'SSL/cert.pem'), 'utf8');
 const credentials = { key: privateKey, cert: certificate };
-const jwtSecret = '5ff4de49259eac1f2b6ac32449c6a4c515156bdd73a89e76827e91247fff567b'
+const jwtSecret = '5ff4de49259eac1f2b6ac32449c6a4c515156bdd73a89e76827e91247fff567b' //in production add to an environment variable
 app.use(cors())
 app.use(express.json()); // To parse JSON request bodies
 mongoose.connect('mongodb://127.0.0.1:27017/db')
@@ -28,15 +28,15 @@ mongoose.connect('mongodb://127.0.0.1:27017/db')
   const httpsServer = https.createServer(credentials, app);
 //Authentication===================================
 const authenticateToken = (req, res, next) => {
-  const token = req.headers['authorization']?.split(' ')[1]; // Get the token from the Authorization header
+  const token = req.headers['authorization']?.split(' ')[1]; 
 
-  if (!token) return res.sendStatus(401); // No token provided, return Unauthorized
+  if (!token) return res.sendStatus(401); 
 
   jwt.verify(token,jwtSecret , (err, user) => {
-    if (err) return res.sendStatus(403); // Invalid token, return Forbidden
+    if (err) return res.sendStatus(403); 
     console.log("user authenticated")
-    req.user = user; // Attach the decoded user information to the request object
-    next(); // Call the next middleware or route handler
+    req.user = user; 
+    next(); 
   });
 };
 app.post('/api/users/register', async (req, res) => {
@@ -56,13 +56,13 @@ app.post('/api/users/register', async (req, res) => {
       res.status(500).send({ message: 'Error inserting user', error });
   }
 });
-  // Login user and return JWT
+
   app.post('/api/auth/login', async (req, res) => {
-    const { phone, password } = req.body; // Change to req.body to get the data from the request body
+    const { phone, password } = req.body; 
     console.log(phone, password);
     
     try {
-      // Compare the received hash with the one stored in the DB
+
       const user = await User.findOne({ phone });
   
       if (!user) {
@@ -70,7 +70,7 @@ app.post('/api/users/register', async (req, res) => {
         return res.status(401).json({ message: 'Invalid username or password' });
       }
   
-      const isPasswordValid = await bcrypt.compare(password, user.password); // Assuming user.password is the hashed password
+      const isPasswordValid = await bcrypt.compare(password, user.password); 
   
       if (!isPasswordValid) {
         console.error('Error logging in:', 'Invalid phone or password');

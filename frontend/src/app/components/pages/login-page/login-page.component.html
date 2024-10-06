@@ -1,10 +1,12 @@
-<p>login-page works!</p>
-<mat-form-field>
-    <mat-label>Phone</mat-label>
-    <input matInput type="text" #phone >
-  </mat-form-field>
+<div>
+
   <mat-form-field>
-  <mat-label>Password</mat-label>
-  <input matInput type="text" #password >
-</mat-form-field>
-  <button mat-flat-button class="adjusted-width" (click)="login(phone.value,password.value)">open repair</button>
+      <mat-label>Phone</mat-label>
+      <input matInput type="text" #phone >
+    </mat-form-field>
+    <mat-form-field>
+    <mat-label>Password</mat-label>
+    <input matInput type="password" #password >
+  </mat-form-field>
+</div>
+  <button mat-flat-button class="adjusted-width" (click)="login(phone.value,password.value)">Login</button>

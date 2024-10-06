@@ -35,6 +35,7 @@ async postNewRepair(newRepair: RepairModel): Promise<any> {
 async getUnresolvedRepairs(): Promise<any[]> {
   try {
     const unresolvedRepairs = await firstValueFrom(this.http.get<any[]>(this.apiUrl + '/unresolved'));
+   console.log(unresolvedRepairs)
     return unresolvedRepairs;
   } catch (error) {
     console.error('Error retrieving unresolved repairs:', error);

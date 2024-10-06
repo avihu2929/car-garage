@@ -89,7 +89,7 @@ onCarChange($event: MatSelectChange) {
       this.setClientDataToUI(client)
       this.clients=[]
       this.showClientsSelect=false
-      this.showCarsSelect =true
+      this.showCarsSelect =false
       this.cars=[]
       if (cars && cars.length > 0) {
         cars.forEach(car=>{
@@ -98,7 +98,9 @@ onCarChange($event: MatSelectChange) {
         const firstCar = cars[0]; 
         this.selectedCar = 0
         this.setCarDataToUI(firstCar);
-        this.showCarsSelect = true
+        if(this.cars.length>1){
+          this.showCarsSelect = true
+        }
       }
     }else{
       this.setUIToEmpty()
@@ -108,7 +110,7 @@ onCarChange($event: MatSelectChange) {
       const car = await this.carsService.searchByNumber(this.carNumber);
       if (car) {
         this.showCarsSelect=false
-        this.showClientsSelect=true
+        this.showClientsSelect=false
         this.setCarDataToUI(car)
         const clients = await this.clientsService.getCarOwners(car.number); 
         this.clients=[]
@@ -119,8 +121,11 @@ onCarChange($event: MatSelectChange) {
           })
           const firstClient = clients[0]; 
           this.selectedClient = 0;
-          this.showClientsSelect=true
           this.setClientDataToUI(firstClient);
+          if(this.clients.length>1){
+            this.showClientsSelect=true
+              console.log(this.clients.length)
+          }
         }
       }else{
         this.setUIToEmpty()
