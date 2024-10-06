@@ -1,0 +1,23 @@
+body, html {
+    height: 100%; /* Ensure the body takes the full height */
+    margin: 0;    /* Remove default margin */
+}
+
+.icon-container {
+    display: flex;                /* Enable flexbox */
+    justify-content: center;      /* Center horizontally */
+}
+
+.card-title{
+    margin-left: 40%;
+    margin-right: 40%;
+}
+.card-description{
+    margin-top: 20px;
+    margin-left: 20%;
+    margin-right: 20%;
+}
+.title{
+    display: flex;                /* Enable flexbox */
+    justify-content: center;  
+}

@@ -2,8 +2,8 @@ const mongoose = require('mongoose');
 
 // Define the schema for users
 const userSchema = new mongoose.Schema({
-  name: { type: String, required: true },
-  age: { type: Number, required: false }
+  hash: { type: String, required: true },
+  name: { type: String, required: false }
 });
 
 // Create the model

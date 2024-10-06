@@ -12,11 +12,23 @@ export class UsersService {
   constructor(private http: HttpClient, private router: Router) { }
 
   
-  getUsers(): Observable<UserModel[]> {
-    return this.http.get<UserModel[]>('http://localhost:3000/api/users')
-    .pipe(tap({error: ()=> this.router.navigate(["error"])}));
+  // getUsers(): Observable<UserModel[]> {
+  //   return this.http.get<UserModel[]>('http://localhost:3000/api/users')
+  //   .pipe(tap({error: ()=> this.router.navigate(["error"])}));
+  // }
+  
+  getUsers(): Observable<any> {
+    return this.http.get(`'http://localhost:3000/api/users`);
   }
 
+  async login(hash: string): Promise<void> {
+    try {
+      const response = await firstValueFrom(this.http.post('http://localhost:3000/api/auth/login', hash));
+      console.log('New repair posted:', response);
+    } catch (error) {
+      console.error('Error posting repair:', error);
+    }
+  }
 async getUsers2(): Promise<UserModel[]> {
   try {
     const users = await firstValueFrom(this.http.get<UserModel[]>('http://localhost:3000/api/users'));

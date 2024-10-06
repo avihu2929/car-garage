@@ -9,7 +9,6 @@ import { NgModule } from '@angular/core';
 import { io } from 'socket.io-client';
 import { FormsModule } from '@angular/forms';  //for input box
 
-import { UnsolvedRepairsPageComponent } from './components/pages/unsolved-repairs-page/unsolved-repairs-page.component';
 interface User {
   _id?: string; // Optional for newly created users
   name: string;

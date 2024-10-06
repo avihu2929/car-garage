@@ -1,40 +1,12 @@
 <div class="right-align">
-  <button mat-button [matMenuTriggerFor]="menu">תפריט</button>
+  <button mat-button [matMenuTriggerFor]="menu">Menu</button>
   <mat-menu #menu="matMenu">
-    <button mat-menu-item routerLink="/" routerLinkActive="active" ariaCurrentWhenActive="page">testing</button>
+    <button mat-menu-item routerLink="/" routerLinkActive="active" ariaCurrentWhenActive="page">Home</button>
     <button mat-menu-item routerLink="main-page" routerLinkActive="active" ariaCurrentWhenActive="page">History</button>
     <button mat-menu-item routerLink="add-car-page" routerLinkActive="active" ariaCurrentWhenActive="page">Add Car</button>
     <button mat-menu-item routerLink="add-client-page" routerLinkActive="active" ariaCurrentWhenActive="page">Add Client</button>
     <button mat-menu-item routerLink="add-repair-page" routerLinkActive="active" ariaCurrentWhenActive="page">Add Repair</button>
+    <button mat-menu-item routerLink="unresolved-repairs-page" routerLinkActive="active" ariaCurrentWhenActive="page">unresolved</button>
+    <button mat-menu-item routerLink="login-page" routerLinkActive="active" ariaCurrentWhenActive="page">login</button>
   </mat-menu>
 </div>
-
-  <!--'
-  
-  <header>
-    <div class="container">
-      <a routerLink="/" class="logo">ראשי</a>
-      <nav>
-        <ul>
-          <li>
-            <a routerLink="/login">התחברות</a>
-          </li>
-          <li class="menu-container">
-            <a routerLink="/dashboard">מתשמש</a>
-            <div class="menu">
-              <a routerLink="/profile">Profile</a>
-              <a routerLink="/orders">Orders</a>
-              <a>Logout</a>
-            </div>
-          </li>
-          <li>
-            <a routerLink="/cart-page">
-              Cart <span>3</span>
-            </a>
-          </li>
-        </ul>
-      </nav>
-    </div>
-  </header>
-  
-  '-->

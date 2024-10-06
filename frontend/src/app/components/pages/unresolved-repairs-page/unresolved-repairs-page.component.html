@@ -1,0 +1,12 @@
+
+<div class="div">
+
+
+      <mat-expansion-panel class="card" hideToggle *ngFor="let repair of unresolvedRepairs">
+        <mat-expansion-panel-header >
+          <mat-panel-description> {{ repair.client.firstName }} ({{ repair.car.number }}) </mat-panel-description>
+        </mat-expansion-panel-header>
+        <p>Phone: {{repair.client.phone}} <br>Issue: {{repair.issue}}</p>
+      </mat-expansion-panel>
+
+</div>

@@ -2,12 +2,13 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { firstValueFrom } from 'rxjs';
+import { RepairModel } from '../model/repair.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class RepairsService {
-  private apiUrl = 'http://localhost:3000/api/clients';
+  private apiUrl = 'http://localhost:3000/api/repairs';
   constructor(private http: HttpClient, private router: Router) { }
   async searchByPhone(phone: number): Promise<any[]> {
     try {
@@ -20,5 +21,25 @@ export class RepairsService {
       return []; // Return an empty array on error
     }
   }
-
+async postNewRepair(newRepair: RepairModel): Promise<any> {
+  try {
+    console.log('Posting new repair:', newRepair);
+    const response = await firstValueFrom(this.http.post(this.apiUrl, newRepair));
+    console.log('New repair posted:', response);
+    return response;
+  } catch (error) {
+    console.error('Error posting repair:', error);
+    return null;
+  }
+}
+async getUnresolvedRepairs(): Promise<any[]> {
+  try {
+    const unresolvedRepairs = await firstValueFrom(this.http.get<any[]>(this.apiUrl + '/unresolved'));
+    return unresolvedRepairs;
+  } catch (error) {
+    console.error('Error retrieving unresolved repairs:', error);
+    this.router.navigate(['error']);
+    return []; // Return an empty array on error
+  }
+}
 }
