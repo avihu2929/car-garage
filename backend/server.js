@@ -125,7 +125,7 @@ app.post('/api/cars/post',authenticateToken, async (req, res) => {
       res.status(500).send({ message: 'Error inserting user', error });
   }
 });
-app.post('/api/clients/post', async (req, res) => {
+app.post('/api/clients/post',authenticateToken, async (req, res) => {
   try {
     const newClient = new Client({
       firstName:req.body.firstName,
@@ -147,7 +147,7 @@ app.post('/api/clients/post', async (req, res) => {
 
 
 
-app.delete('/api/users/:id', async (req, res) => {
+app.delete('/api/users/:id',authenticateToken, async (req, res) => {
   try {
       const userId = req.params.id; // Get the user ID from the request parameters
       const result = await User.findByIdAndDelete(userId); // Delete the user from the database
@@ -182,7 +182,7 @@ app.put('/api/users/:id', async (req, res) => {
 });
 
 
-  app.get('/api/users', async (req, res) => {
+  app.get('/api/users',authenticateToken, async (req, res) => {
     try {
       const users = await User.find(); // Fetch all users from the database
    //   io.emit('userUpdate'); // Emit 'userUpdate' event to all connected clients
@@ -191,7 +191,7 @@ app.put('/api/users/:id', async (req, res) => {
       res.status(500).json({ error: err.message }); // Handle errors
     }
   });
-  app.get('/api/users/:name', async (req, res) => {
+  app.get('/api/users/:name',authenticateToken, async (req, res) => {
     try {
       const user = await User.findOne({ name: req.params.name }); // Find user by name
       if (user) {
@@ -204,7 +204,7 @@ app.put('/api/users/:id', async (req, res) => {
     }
   });
 //repairs service======================================
-app.get('/api/clients/searchByPhone', async (req, res) => {
+app.get('/api/clients/searchByPhone',authenticateToken, async (req, res) => {
   const { phone } = req.query;
 
   try {
@@ -218,7 +218,7 @@ app.get('/api/clients/searchByPhone', async (req, res) => {
     res.status(500).send({ message: 'Error searching for clients', error });
   }
 });
-app.get('/api/cars/searchByNumber', async (req, res) => {
+app.get('/api/cars/searchByNumber',authenticateToken, async (req, res) => {
   const { number } = req.query;
 
   try {
@@ -232,7 +232,7 @@ app.get('/api/cars/searchByNumber', async (req, res) => {
     res.status(500).send({ message: 'Error searching for cars', error });
   }
 });
-app.get('/api/cars/byClientPhone', async (req, res) => {
+app.get('/api/cars/byClientPhone',authenticateToken, async (req, res) => {
   const { phone } = req.query; // Extract phone number from query parameters
 
   try {
@@ -254,7 +254,7 @@ app.get('/api/cars/byClientPhone', async (req, res) => {
 });
 
 
-app.get('/api/clients/ownersByCarNumber', async (req, res) => {
+app.get('/api/clients/ownersByCarNumber',authenticateToken, async (req, res) => {
   const { carNumber } = req.query; // Extract car number from query parameters
 
   try {
@@ -268,7 +268,7 @@ app.get('/api/clients/ownersByCarNumber', async (req, res) => {
 console.log()
 
 // repairs=====================
-app.post('/api/repairs', async (req, res) => {
+app.post('/api/repairs',authenticateToken, async (req, res) => {
   const { carNumber, clientPhone, price, issue, resolved } = req.body; // Extract all required fields from request body
 
   try {
@@ -279,7 +279,7 @@ app.post('/api/repairs', async (req, res) => {
     res.status(500).send({ message: 'Error creating repair', error });
   }
 });
-app.patch('/api/repairs/:repairId', async (req, res) => {
+app.patch('/api/repairs/:repairId',authenticateToken, async (req, res) => {
   const repairId = req.params.repairId;
 
   try {
@@ -301,7 +301,7 @@ app.patch('/api/repairs/:repairId', async (req, res) => {
 });
 // Get all unresolved repairs
 // Get all unresolved repairs
-app.get('/api/repairs/unresolved', async (req, res) => {
+app.get('/api/repairs/unresolved',authenticateToken, async (req, res) => {
   try {
     const unresolvedRepairs = await Repair.find({ resolved: false });
 

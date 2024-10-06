@@ -14,8 +14,8 @@ export class CarsService {
     try {
       const token = localStorage.getItem('token');
       const headers = {
-        'Authorization': `Bearer ${token}`, // Include the token in the Authorization header
-        'Content-Type': 'application/json' // Optional: specify the content type
+        'Authorization': `Bearer ${token}`, 
+        'Content-Type': 'application/json'
       };
       await firstValueFrom(this.http.post(`${this.apiUrl}/post`, newCar, { headers }));
     } catch (error) {
@@ -24,7 +24,12 @@ export class CarsService {
   }
   async searchByNumber(number: number): Promise<CarModel|null> {
     try {
-      const cars = await firstValueFrom(this.http.get<CarModel>(`${this.apiUrl}/searchByNumber?number=${number}`));
+      const token = localStorage.getItem('token');
+      const headers = {
+        'Authorization': `Bearer ${token}`, 
+        'Content-Type': 'application/json'
+      };
+      const cars = await firstValueFrom(this.http.get<CarModel>(`${this.apiUrl}/searchByNumber?number=${number}`, { headers }));
       return cars; // Return the list of cars
     } catch (error) {
       console.error('Error searching for cars:', error);
@@ -33,7 +38,12 @@ export class CarsService {
   }
   async searchByClientPhone(phone: number): Promise<CarModel[]|null> {
     try {
-      const cars = await firstValueFrom(this.http.get<CarModel[]>(`${this.apiUrl}/byClientPhone?phone=${phone}`));
+      const token = localStorage.getItem('token');
+      const headers = {
+        'Authorization': `Bearer ${token}`, 
+        'Content-Type': 'application/json'
+      };
+      const cars = await firstValueFrom(this.http.get<CarModel[]>(`${this.apiUrl}/byClientPhone?phone=${phone}`,{headers}));
       return cars; // Return the list of cars
     } catch (error) {
       console.error('Error searching for cars:', error);

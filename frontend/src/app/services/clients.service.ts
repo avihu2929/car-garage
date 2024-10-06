@@ -18,7 +18,12 @@ export class ClientsService {
     cars: number[]; 
   }): Promise<void> {
     try {
-      await firstValueFrom(this.http.post(`${this.apiUrl}/post`, newClient));
+      const token = localStorage.getItem('token');
+const headers = {
+  'Authorization': `Bearer ${token}`, 
+  'Content-Type': 'application/json'
+};
+      await firstValueFrom(this.http.post(`${this.apiUrl}/post`, newClient,{ headers }));
     } catch (error) {
       this.router.navigate(['error']);
     }
@@ -26,7 +31,12 @@ export class ClientsService {
 
   async searchByPhone(phone: number): Promise<ClientModel | null> {
     try {
-      const clients: ClientModel =  await firstValueFrom(this.http.get<any>(`${this.apiUrl}/searchByPhone`, { params: { phone } }));
+      const token = localStorage.getItem('token');
+const headers = {
+  'Authorization': `Bearer ${token}`, 
+  'Content-Type': 'application/json'
+};
+      const clients: ClientModel =  await firstValueFrom(this.http.get<any>(`${this.apiUrl}/searchByPhone`, { params: { phone }, headers }));
       return clients;
     } catch (error) {
       console.error('Error searching for clients by phone:', error);
@@ -36,7 +46,12 @@ export class ClientsService {
   }
   async getCarOwners(carNumber: number): Promise<ClientModel[]|null> {
     try {
-      const owners = await firstValueFrom(this.http.get<ClientModel[]>(`${this.apiUrl}/ownersByCarNumber?carNumber=${carNumber}`));
+      const token = localStorage.getItem('token');
+const headers = {
+  'Authorization': `Bearer ${token}`, 
+  'Content-Type': 'application/json'
+};
+      const owners = await firstValueFrom(this.http.get<ClientModel[]>(`${this.apiUrl}/ownersByCarNumber?carNumber=${carNumber}`,{headers}));
       return owners
     } catch (error) {
       console.error('Error fetching car owners:', error);
