@@ -7,7 +7,7 @@ const Repair = require('./models/Repair');
 const Client = require('./models/Client'); 
 const fs = require('fs');
 const path = require('path');
-
+const jwt = require('jsonwebtoken');
 const app = express();
 var cors = require("cors");
 const bcrypt = require('bcrypt');
@@ -20,12 +20,25 @@ const WebSocket = require('ws');
 const privateKey = fs.readFileSync(path.resolve(__dirname, 'SSL/key.pem'), 'utf8');
 const certificate = fs.readFileSync(path.resolve(__dirname, 'SSL/cert.pem'), 'utf8');
 const credentials = { key: privateKey, cert: certificate };
+const jwtSecret = '5ff4de49259eac1f2b6ac32449c6a4c515156bdd73a89e76827e91247fff567b'
 app.use(cors())
 app.use(express.json()); // To parse JSON request bodies
 mongoose.connect('mongodb://127.0.0.1:27017/db')
   .then(() => console.log('Connected!'));
   const httpsServer = https.createServer(credentials, app);
 //Authentication===================================
+const authenticateToken = (req, res, next) => {
+  const token = req.headers['authorization']?.split(' ')[1]; // Get the token from the Authorization header
+
+  if (!token) return res.sendStatus(401); // No token provided, return Unauthorized
+
+  jwt.verify(token,jwtSecret , (err, user) => {
+    if (err) return res.sendStatus(403); // Invalid token, return Forbidden
+    console.log("user authenticated")
+    req.user = user; // Attach the decoded user information to the request object
+    next(); // Call the next middleware or route handler
+  });
+};
 app.post('/api/users/register', async (req, res) => {
   try {
     const { phone, password } = req.body;
@@ -44,28 +57,48 @@ app.post('/api/users/register', async (req, res) => {
   }
 });
   // Login user and return JWT
-  app.get('/api/auth/login', async (req, res) => {
-    const {phone,hashedPassword} = req.query;
+  app.post('/api/auth/login', async (req, res) => {
+    const { phone, password } = req.body; // Change to req.body to get the data from the request body
+    console.log(phone, password);
+    
     try {
       // Compare the received hash with the one stored in the DB
       const user = await User.findOne({ phone });
-      bcrypt.compare(hashedPassword, user.password)
+  
       if (!user) {
         console.error('Error logging in:', 'Invalid phone or password');
-        res.status(401).json({ message: 'Invalid username or password' });
-        return;
+        return res.status(401).json({ message: 'Invalid username or password' });
       }
-      // Generate and return a JWT token
-     // const jwt = await generateToken(user);
-      //res.json({ token: jwt, user });
-      res.json({  user });
+  
+      const isPasswordValid = await bcrypt.compare(password, user.password); // Assuming user.password is the hashed password
+  
+      if (!isPasswordValid) {
+        console.error('Error logging in:', 'Invalid phone or password');
+        return res.status(401).json({ message: 'Invalid username or password' });
+      }
+  
+      const token = generateToken(user);
+      res.status(200).json({ message: 'Login successful', token });
+  
     } catch (error) {
       console.error('Error logging in:', error);
       res.status(500).json({ message: 'Internal Server Error' });
     }
   });
   
+  
 
+
+  const generateToken = (user) => {
+    // Define the payload and options for the token
+    const payload = { id: user._id, phone: user.phone }; // You can include any user info you need
+    const options = { expiresIn: '1h' }; // Token expiration time
+    const secret = jwtSecret;
+    // move secret to enviroment variable in production
+    // Generate and return the token
+    return jwt.sign(payload, secret, options);
+  };
+  
   
 //Authentication===================================
 
@@ -79,7 +112,7 @@ app.post('/api/users/post', async (req, res) => {
         res.status(500).send({ message: 'Error inserting user', error });
     }
 });
-app.post('/api/cars/post', async (req, res) => {
+app.post('/api/cars/post',authenticateToken, async (req, res) => {
   try {
       const newCar = new Car(req.body); // Create a new instance of the User model
       const result = await newCar.save(); // Save the new user to the database

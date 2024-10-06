@@ -12,7 +12,12 @@ export class CarsService {
   constructor(private http: HttpClient, private router: Router) { }
   async addCar(newCar: { number: number; company: string; model: string; code?: number }): Promise<void> {
     try {
-      await firstValueFrom(this.http.post(`${this.apiUrl}/post`, newCar));
+      const token = localStorage.getItem('token');
+      const headers = {
+        'Authorization': `Bearer ${token}`, // Include the token in the Authorization header
+        'Content-Type': 'application/json' // Optional: specify the content type
+      };
+      await firstValueFrom(this.http.post(`${this.apiUrl}/post`, newCar, { headers }));
     } catch (error) {
       this.router.navigate(['error']);
     }

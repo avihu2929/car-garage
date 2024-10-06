@@ -8,6 +8,7 @@ import { UsersService } from '../../../services/users.service';
 import { genSalt, hash } from "bcrypt-ts";
 import { compareSync } from "bcrypt-ts";
 import { compare } from 'bcrypt-ts';
+
 @Component({
   selector: 'app-login-page',
   standalone: true,
@@ -20,19 +21,18 @@ export class LoginPageComponent {
   http: any;
   hash1: any;
   hash2: any;
-login(phone: string, password: string){
-
-  genSalt(10)
-  .then((salt) => hash("hello", salt))
-  .then((hash) => {
-    this.hash1=hash;
-  });
-  genSalt(10)
-  .then((salt) => hash("hello", salt))
-  .then((hash) => {
-    this.hash2=hash;
-  });
-
+async login(phone: string, password: string){
+await this.usersService.login(phone,password)
 }
 
 }
+  // genSalt(10)
+  // .then((salt) => hash("hello", salt))
+  // .then((hash) => {
+  //   this.hash1=hash;
+  // });
+  // genSalt(10)
+  // .then((salt) => hash("hello", salt))
+  // .then((hash) => {
+  //   this.hash2=hash;
+  // });

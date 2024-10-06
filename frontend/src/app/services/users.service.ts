@@ -3,6 +3,10 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { catchError, firstValueFrom, map, Observable, of, tap } from 'rxjs';
 import { UserModel } from '../model/user.model';
+interface LoginResponse {
+  message: string;
+  token: string; // or { accessToken: string } if the token is nested
+}
 
 @Injectable({
   providedIn: 'root',
@@ -10,6 +14,7 @@ import { UserModel } from '../model/user.model';
 export class UsersService {
 
   constructor(private http: HttpClient, private router: Router) { }
+  private apiUrl = 'https://localhost:3000/api';
 
   
   // getUsers(): Observable<UserModel[]> {
@@ -21,10 +26,14 @@ export class UsersService {
     return this.http.get(`'https://localhost:3000/api/users`);
   }
 
-  async login(hash: string): Promise<void> {
+  async login(phone:string ,password: string): Promise<void> {
     try {
-      const response = await firstValueFrom(this.http.post('https://localhost:3000/api/auth/login', hash));
-      console.log('New repair posted:', response);
+      const response: LoginResponse = await firstValueFrom(this.http.post<LoginResponse>(`${this.apiUrl}/auth/login`, { phone, password }));
+
+      const token = response.token;
+      localStorage.setItem('token', token);
+      console.log('login:', response);
+      this.router.navigate(['']);
     } catch (error) {
       console.error('Error posting repair:', error);
     }
