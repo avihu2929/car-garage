@@ -1,0 +1,15 @@
+.form-container {
+    display: flex;
+    margin: 5%;
+    margin-right: 35%;
+    margin-left: 35%;
+    flex-direction: column; /* Stack items vertically */
+    gap: 16px; /* Space between elements */
+  }
+.adjusted-width{
+    margin-right: 70%;
+}
+
+.inputs{
+  margin-right: 10px;
+}

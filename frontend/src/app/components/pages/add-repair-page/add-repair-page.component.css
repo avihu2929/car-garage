@@ -1,6 +1,8 @@
 .form-container {
     display: flex;
     margin: 3%;
+    margin-right: 35%;
+    margin-left: 35%;
     flex-direction: column; /* Stack items vertically */
     gap: 16px; /* Space between elements */
   }
@@ -10,4 +12,7 @@
 
 .inputs{
   margin-right: 10px;
+}
+.inputs2{
+  margin-right: 70%;
 }

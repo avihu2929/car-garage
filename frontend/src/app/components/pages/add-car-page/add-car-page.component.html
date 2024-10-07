@@ -1,29 +1,31 @@
 
+<form class="form-container">
+  <mat-form-field class="example-full-width">
+    <mat-label>Car Number</mat-label>
+    <input matInput type="number" [(ngModel)]="carNumber" name="carNumber">
+  </mat-form-field>
 
+  <mat-form-field class="example-full-width">
+      <mat-label>Company</mat-label>
+      <mat-select [(ngModel)]="selectedCompany" name="company">
+          @for (company of companies; track company) {
+            <mat-option [value]="company.value">{{company.viewValue}}</mat-option>
+          }
+        </mat-select>
+    </mat-form-field>
 
-        <mat-form-field class="example-full-width">
-          <mat-label>Car Number</mat-label>
-          <input matInput type="number" [(ngModel)]="carNumber">
-        </mat-form-field>
+    <mat-form-field class="example-full-width">
+      <mat-label>Model</mat-label>
+      <input matInput type="text" [(ngModel)]="carModel" name="carModel">
+    </mat-form-field>
+
+    <mat-form-field class="example-full-width">
+      <mat-label>Code</mat-label>
+      <input matInput type="number" [(ngModel)]="carCode" name="carCode">
+    </mat-form-field>
+    <div class="example-button-row">
+      <button mat-flat-button (click)="addCar()">Add car</button>
+    </div>
+</form>
+
       
-        <mat-form-field class="example-full-width">
-            <mat-label>Company</mat-label>
-            <mat-select [(ngModel)]="selectedCompany">
-                @for (company of companies; track company) {
-                  <mat-option [value]="company.value">{{company.viewValue}}</mat-option>
-                }
-              </mat-select>
-          </mat-form-field>
-
-          <mat-form-field class="example-full-width">
-            <mat-label>Model</mat-label>
-            <input matInput type="text" [(ngModel)]="carModel">
-          </mat-form-field>
-
-          <mat-form-field class="example-full-width">
-            <mat-label>Code</mat-label>
-            <input matInput type="number" [(ngModel)]="carCode">
-          </mat-form-field>
-          <div class="example-button-row">
-            <button (click)="addCar()">Add</button>
-          </div>

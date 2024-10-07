@@ -3,4 +3,11 @@ move to https - done
 hash passwords - done
 finish repairs
 history (manager/client)
-authenticate and permissions
+authenticate - done
+permissions
+delete token on auth error
+
+important features:
+enviroment variables (jwt secret)
+enivroment for dev/prod
+check angular.json for filerepalcement field

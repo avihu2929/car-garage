@@ -5,6 +5,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { CarsService } from '../../../services/cars.service';
 import { CarModel } from '../../../model/car.model';
+import {MatButtonModule} from '@angular/material/button';
 interface Company {
   value: string;
   viewValue: string;
@@ -12,7 +13,7 @@ interface Company {
 @Component({
   selector: 'app-add-car-page',
   standalone: true,
-  imports: [MatInputModule,MatFormFieldModule,ReactiveFormsModule,MatSelectModule,FormsModule],
+  imports: [MatButtonModule,MatInputModule,MatFormFieldModule,ReactiveFormsModule,MatSelectModule,FormsModule],
   templateUrl: './add-car-page.component.html',
   styleUrl: './add-car-page.component.css'
 })

@@ -23,7 +23,7 @@ export class AddRepairPageComponent {
 
 
 carNumber: any;
-phoneNumber: number = 666;
+phoneNumber: number = 0;
 lastName: any;
 firstName: any;
 carCompany: any;

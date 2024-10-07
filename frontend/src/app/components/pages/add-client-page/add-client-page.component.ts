@@ -4,11 +4,12 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { ClientsService } from '../../../services/clients.service';
+import {MatButtonModule} from '@angular/material/button';
 import { CommonModule } from '@angular/common';
 @Component({
   selector: 'app-add-client-page',
   standalone: true,
-  imports: [MatInputModule,MatFormFieldModule,ReactiveFormsModule,MatSelectModule,FormsModule,CommonModule],
+  imports: [MatButtonModule,MatInputModule,MatFormFieldModule,ReactiveFormsModule,MatSelectModule,FormsModule,CommonModule],
   templateUrl: './add-client-page.component.html',
   styleUrl: './add-client-page.component.css'
 })

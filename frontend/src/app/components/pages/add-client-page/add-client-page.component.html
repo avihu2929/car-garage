@@ -1,4 +1,4 @@
-<form>
+<form class="form-container">
     <mat-form-field>
       <mat-label>First Name</mat-label>
       <input matInput type="text" [(ngModel)]="firstName" name="firstName">
@@ -19,11 +19,11 @@
       <mat-label>Car Number</mat-label>
       <input matInput type="number" [(ngModel)]="carNumber" name="carNumber">
     </mat-form-field>
-    <label>cars:</label>
+    <label>Cars:</label>
     <ul>
         <li *ngFor="let car of cars">{{ car }}</li>
       </ul>
-    <button (click)="addCarNumber()">Add Car</button>
-    <button (click)="addClient()">Add Client</button>
+    <button mat-flat-button  (click)="addCarNumber()">Link Car</button>
+    <button mat-flat-button  (click)="addClient()">Add Client</button>
   </form>
   

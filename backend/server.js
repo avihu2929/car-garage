@@ -15,20 +15,26 @@ const app = express();
 var cors = require("cors");
 const bcrypt = require('bcryptjs');
 const https = require('https');
-// const privateKey = fs.readFileSync(path.resolve(__dirname, 'SSL/key.pem'), 'utf8');
-// const certificate = fs.readFileSync(path.resolve(__dirname, 'SSL/cert.pem'), 'utf8');
-// const credentials = { key: privateKey, cert: certificate };
-const jwtSecret = '5ff4de49259eac1f2b6ac32449c6a4c515156bdd73a89e76827e91247fff567b' //in production add to an environment variable
-app.use(cors())
+require('dotenv').config();
+
+const jwtSecret = process.env.JWT_SECRET;
+app.use(cors({ origin: "https://car-garage-frontend-be7d1240bcfe.herokuapp.com", credentials: true }))//{ origin: "https://car-garage-frontend-be7d1240bcfe.herokuapp.com", credentials: true }
+// const corsOptions = {
+//   origin: 'http://localhost:4200', // Change this to match your Angular app's URL
+//   methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'], // Add any other HTTP methods you might need
+//   allowedHeaders: ['Content-Type', 'Authorization'], // Allow headers like Content-Type and Authorization
+// };
+
+// app.use(cors(corsOptions));
+
 app.use(express.json()); // To parse JSON request bodies
-const port =process.env.PORT
+const port = process.env.PORT || 8080; 
 const mongoURI = process.env.MONGODB_URI 
-// mongoose.connect('mongodb://127.0.0.1:27017/db')
-//   .then(() => console.log('Connected!'));
+
 mongoose.connect(mongoURI)
   .then(() => console.log('MongoDB connected'))
   .catch(err => console.error('MongoDB connection error:', err));
-  // const httpsServer = https.createServer(credentials, app);
+
 //Authentication===================================
 const authenticateToken = (req, res, next) => {
   const token = req.headers['authorization']?.split(' ')[1]; 
@@ -277,6 +283,7 @@ app.post('/api/repairs',authenticateToken, async (req, res) => {
   try {
     const repair = await Repair.create({ carNumber, clientPhone, price, issue, resolved }); // Create a new repair document
     res.status(201).send(repair); // Return the newly created repair
+    io.emit('refreshRepairs');
   } catch (error) {
     console.error('Error creating repair:', error);
     res.status(500).send({ message: 'Error creating repair', error });
@@ -284,14 +291,16 @@ app.post('/api/repairs',authenticateToken, async (req, res) => {
 });
 app.patch('/api/repairs/:repairId',authenticateToken, async (req, res) => {
   const repairId = req.params.repairId;
-
+  const { cost, fixes } = req.body;
   try {
     const repair = await Repair.findByIdAndUpdate(repairId, {
       $set: {
-        resolved: true
+        resolved: true,
+        cost,
+        fixes
       }
     }, { new: true });
-
+    io.emit('refreshRepairs');
     if (!repair) {
       return res.status(404).send({ message: 'Repair not found' });
     }
@@ -326,13 +335,55 @@ app.get('/api/repairs/unresolved',authenticateToken, async (req, res) => {
     res.status(500).send({ message: 'Error retrieving unresolved repairs', error });
   }
 });
-// Start the server
+
 // app.listen(port, () => {
-//   console.log(`Server running on http://localhost:${port}`);
+//   console.log(`Server is running on port ${port}`);
 // });
-// httpsServer.listen(3000, () => {
-//   console.log('HTTPS Server running on https://localhost:3000');
-// });
-app.listen(port, () => {
-  console.log(`Server is running on port ${port}`);
+
+////////////////
+// server.js
+
+const server = require('http').createServer(app);
+serverOptions= {
+  cors: {
+    origin: ["https://car-garage-frontend-be7d1240bcfe.herokuapp.com"],
+    credentials: true
+  },
+}
+const io = require('socket.io')(server,serverOptions);
+server.listen(port, function() {
+  console.log(`Listening on port ${port}`);
 });
+// const createServer = require('http').createServer;
+// const http = require('http');
+// const { Server } = require('socket.io');
+
+// const httpServer = createServer(app);
+// serverOptions= {
+//   cors: {
+//     origin: ["https://car-garage-frontend-be7d1240bcfe.herokuapp.com"],
+//   },
+// }
+// const io = new Server(httpServer, serverOptions);
+
+//  httpServer.listen(port);
+// const { createServer } = require("https");
+// const { Server } = require("socket.io");
+// const httpsServer = createServer(app);
+// serverOptions= {
+//   cors: {
+//     origin: ["https://car-garage-frontend-be7d1240bcfe.herokuapp.com"],
+//     methods: ["GET", "POST"],
+//     allowedHeaders: [
+//       "Content-Type",       // Allow Content-Type header
+//       "Authorization",      // Allow Authorization header
+//       "Origin",             // Allow Origin header
+//       "X-Custom-Header",    // Allow any custom headers you may use
+//       "Accept",             // Allow Accept header
+//       "X-Requested-With"    // Allow X-Requested-With header for AJAX requests
+//   ],
+//     credentials: true
+//   },
+// }
+// const io = new Server(httpsServer, serverOptions);
+// httpsServer.listen(process.env.PORT);

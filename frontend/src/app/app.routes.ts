@@ -8,12 +8,14 @@ import { AddRepairPageComponent } from './components/pages/add-repair-page/add-r
 import { HomePageComponent } from './components/pages/home-page/home-page.component';
 import { UnresolvedRepairsPageComponent } from './components/pages/unresolved-repairs-page/unresolved-repairs-page.component';
 import { LoginPageComponent } from './components/pages/login-page/login-page.component';
+import { TabsComponent } from './components/partials/tabs/tabs.component';
 export const routes: Routes = [ 
      { path: '', component: HomePageComponent }, // Add the route for your new page
-     { path: 'main-page', component: HistoryComponent },
+     { path: 'history-page', component: HistoryComponent },
      {path:"add-car-page",component:AddCarPageComponent},
      {path:"add-client-page",component:AddClientPageComponent},
      {path:"add-repair-page",component:AddRepairPageComponent},
+     {path:"tabs-page",component:TabsComponent},
      { path: 'unresolved-repairs-page', component: UnresolvedRepairsPageComponent },
      { path: 'login-page', component: LoginPageComponent },
      { path: '**', component: ErrorComponent }
